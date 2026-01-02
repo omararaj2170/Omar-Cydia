@@ -1,0 +1,9 @@
+Package: com.yourname.test
+Name: Test Package
+Version: 1.0
+Architecture: iphoneos-arm
+Description: First repo test
+Maintainer: Your Name
+Author: Your Name
+Section: Tweaks
+Filename: debs/test.deb
