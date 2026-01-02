@@ -2,10 +2,9 @@ Package: omar.cydia.repo
 Name: Omar Cydia Repo
 Version: 1.0
 Architecture: iphoneos-arm
-Description: Repository placeholder package
+Description: All of Cydia Tweaks
 Maintainer: Omar
 Author: Omar
-Section: Repositories
-Filename: debs/placeholder.deb
+Section: Tweaks
+Filename: debs/
 Size: 0
-
