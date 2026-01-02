@@ -1,1 +1,11 @@
+Package: omar.cydia.repo
+Name: Omar Cydia Repo
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Repository placeholder package
+Maintainer: Omar
+Author: Omar
+Section: Repositories
+Filename: debs/placeholder.deb
+Size: 0
 
