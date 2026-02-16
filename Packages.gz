@@ -1,11 +1,14 @@
-Package: omar.cydia.repo
-Name: Omar Cydia Repo
-Version: 1.0
+Package: openssl
+Priority: standard
+Section: Security
+Installed-Size: 1464
+Maintainer: Sam Bingner <maintainer@sbdhi.com>
 Architecture: iphoneos-arm
-Description: Repository placeholder package
-Maintainer: Omar
-Author: Omar
-Section: Repositories
-Filename: debs/placeholder.deb
-Size: 0
+Version: 1.1.1i-1
+Pre-Depends: dpkg (>= 1.14.25-8)
+Depends: libssl1.1.1, firmware (>=11.0) | libssl0.9.8, libssl1.0
+Description: OpenSSL tools
+Name: OpenSSL
+Filename: debs/openssl_1.1.1i-1_iphoneos-arm.deb
+Size: 226012
 
