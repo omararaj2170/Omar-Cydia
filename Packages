@@ -1,0 +1,76 @@
+Package: com.ps.anywherewidgetsforipad
+Version: 1.4.0
+Architecture: iphoneos-arm
+Maintainer: PoomSmart
+Installed-Size: 168
+Depends: mobilesubstrate (>= 0.9.5000), gsc.ipad, firmware (>= 14.0), firmware (<< 15.0)
+Filename: debs/com.ps.anywherewidgetsforipad_1.4.0_iphoneos-arm.deb
+Size: 3878
+MD5sum: 83f5187d52262ee8d3d461598ae1b58a
+SHA1: 51292df43b38e06ba882f4053aa910672cfc3bdf
+SHA256: be0c60a3079a37eb2dbfbc8ce643240991cd8fbde058eb29cff366e1dc26b232
+Section: Tweaks
+Description: Allow widgets to be on home screen on iPad.
+Author: PoomSmart
+Depiction: https://poomsmart.github.io/repo/depictions/anywherewidgetsforipad.html
+Name: Anywhere Widgets for iPad
+Sileodepiction: https://poomsmart.github.io/repo/sileodepictions/anywherewidgetsforipad.json
+
+Package: com.r333d.cylinder
+Version: 1.1
+Architecture: iphoneos-arm
+Maintainer: BigBoss <bigboss@thebigboss.org>
+Installed-Size: 1419
+Depends: firmware (>= 3.0), mobilesubstrate (>= 0.9.5000), preferenceloader
+Filename: debs/com.r333d.cylinder.deb
+Size: 300358
+MD5sum: c24e9c9b3f4096a8b93080207fac5580
+SHA1: dd35f74c38b9ac3652a134136e4ffcb15db67329
+SHA256: 5ddac771540c6f8f8e1ada87fa0deae2f85e1aac2536d125aaa0787667528cd4
+Section: Tweaks
+Homepage: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=cylinderDp
+Description: Make your icons dance
+Tag: purpose::extension, compatible::ios7, compatible::ios8, compatible::ios9, compatible::ios10, compatible::ios11, compatible::ios12, compatible::ios13
+Author: Reed Weichler <rweichler+cydia@gmail.com>
+Depiction: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=cylinderDp
+Dev: rweichler
+Icon: file:///Library/PreferenceBundles/CylinderSettings.bundle/Icon@2x.png
+Name: Cylinder
+Sponsor: thebigboss.org <http://thebigboss.org>
+
+Package: com.spark.snowboard
+Version: 1.4.7-Beta4
+Architecture: iphoneos-arm
+Maintainer: Spark
+Installed-Size: 4892
+Depends: mobilesubstrate, preferenceloader
+Conflicts: anemoneteam.anemone, com.anemonetheming.anemone, winterboard
+Replaces: anemoneteam.anemone, com.anemonetheming.anemone, winterboard
+Provides: anemoneteam.anemone, com.anemonetheming.anemone, winterboard
+Filename: debs/com.spark.snowboard_1.5.28_iphoneos-arm.deb
+Size: 1565784
+MD5sum: 30b16a9c544aea0805f55f1111b4e0aa
+SHA1: 01d0c4400516bc326f76705eac28cc5bc9da859c
+SHA256: 3aa25faa61fc8939f950af1aa3b8de1f7493ee6e2837ab11fa3318a526af30b4
+Section: Tweaks
+Description: Snowboard theming engine
+Author: Spark & Dennis D. Bednarz
+Name: SnowBoard
+
+Package: openssl
+Version: 1.1.1i-1
+Architecture: iphoneos-arm
+Maintainer: Sam Bingner <maintainer@sbdhi.com>
+Installed-Size: 1464
+Pre-Depends: dpkg (>= 1.14.25-8)
+Depends: libssl1.1.1, firmware (>=11.0) | libssl0.9.8, libssl1.0
+Filename: debs/openssl_1.1.1i-1_iphoneos-arm.deb
+Size: 226012
+MD5sum: 7e6057729996ec48f9d1ca83562f89b5
+SHA1: c79f6b18009f8512cc9b0ee4093ed03f2df923f9
+SHA256: 32343b28cfc7182c472e4e791646f8aa75573f692d8a38ab02b857ad389a46ec
+Section: Security
+Priority: standard
+Description: OpenSSL tools
+Name: OpenSSL
+
