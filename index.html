@@ -1,85 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta charset="UTF-8">
   <title>Omar-Cydia Repo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  <h1>📦 Omar-Cydia Repository</h1>
-
-  <p>Add this repo to Cydia, Zebra, or Sileo:</p>
-
-  <code>
-    https://omararaj2170.github.io/Omar-Cydia/
-  </code>
-
-  <hr>
-
-  <p>This is Omar’s personal Cydia repository.</p>
-
-  <ul>
-    <li><a href="Packages">Packages</a></li>
-    <li><a href="Packages.gz">Packages.gz</a></li>
-    <li><a href="Release">Release</a></li>
-    <li><a href="debs/">debs/</a></li>
-  </ul>
-
-  <h2>Available .deb files</h2>
-  <p>The list below is loaded from the <code>Packages</code> file, so new debs appear after you update it.</p>
-  <ul id="deb-list">
-    <li>Loading packages...</li>
-  </ul>
-
-  <p>Made with ❤️ by Omar</p>
-
-  <script>
-    async function loadDebs() {
-      const list = document.getElementById('deb-list');
-
-      try {
-        const response = await fetch('Packages', { cache: 'no-store' });
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const text = await response.text();
-        const stanzas = text.trim().split(/\n\s*\n/).filter(Boolean);
-        const items = [];
-
-        for (const stanza of stanzas) {
-          const lines = stanza.split('\n');
-          let name = '';
-          let version = '';
-          let filename = '';
-
-          for (const line of lines) {
-            if (line.startsWith('Name: ')) name = line.slice(6).trim();
-            if (line.startsWith('Package: ') && !name) name = line.slice(9).trim();
-            if (line.startsWith('Version: ')) version = line.slice(9).trim();
-            if (line.startsWith('Filename: ')) filename = line.slice(10).trim();
-          }
-
-          if (filename) {
-            items.push({ name: name || filename.split('/').pop(), version, filename });
-          }
-        }
-
-        if (!items.length) {
-          list.innerHTML = '<li>No packages found yet.</li>';
-          return;
-        }
-
-        list.innerHTML = items
-          .map((item) => `<li><a href="${item.filename}">${item.name}${item.version ? ` (${item.version})` : ''}</a></li>`)
-          .join('');
-      } catch (error) {
-        list.innerHTML = '<li>Could not load package list. Make sure the Packages file exists.</li>';
-      }
+  <style>
+    :root {
+      --bg: #090b14;
+      --card: #121728;
+      --card-soft: #191f34;
+      --text: #ebf2ff;
+      --muted: #9db2d5;
+      --accent: #6ee7ff;
+      --accent-2: #8b5cf6;
+      --ok: #22c55e;
     }
 
-    loadDebs();
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #1c2b5f66 0%, transparent 60%),
+        radial-gradient(1000px 500px at 100% 0%, #4f1d6d66 0%, transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #171f39, #101525);
+      border: 1px solid #2b355c;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 60px #00000066;
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 3vw, 2.7rem); }
+    .subtitle { margin: 0 0 14px; color: var(--muted); }
+
+    code {
+      display: inline-block;
+      background: #0c1222;
+      border: 1px solid #2a355f;
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #9ce6ff;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+
+    .quick-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .chip {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid #33406c;
+      background: #151d35;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+    }
+
+    .stats {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--card-soft);
+      border: 1px solid #2f3a63;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat .label { color: var(--muted); font-size: 0.85rem; }
+    .stat .value { font-size: 1.25rem; font-weight: 700; margin-top: 6px; }
+
+    .section-title {
+      margin: 28px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #search {
+      background: #0f1528;
+      border: 1px solid #2f3d69;
+      border-radius: 12px;
+      color: var(--text);
+      padding: 10px 12px;
+      min-width: 230px;
+    }
+
+    #status { color: var(--muted); margin: 0 0 14px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .pkg {
+      background: linear-gradient(160deg, #151c32, #111729);
+      border: 1px solid #2f3a63;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .pkg h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .meta { color: var(--muted); font-size: 0.87rem; margin-bottom: 10px; }
+
+    .download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: #03131a;
+      background: linear-gradient(90deg, var(--accent), #90f2ff);
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    .source-tag {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      color: #ddf8ff;
+      background: linear-gradient(120deg, #2f3a63, #3b2c61);
+    }
+
+    .footer { margin-top: 24px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: 1fr; }
+      #search { width: 100%; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>🔥 Omar  Cydia Repo</h1>
+      <p class="subtitle">Add This Repo To Cydia, Zebra Or Sileo</p>
+
+      <code>https://omararaj2170.github.io/Omar-Cydia/</code>
+
+      <div class="quick-links">
+        <a class="chip" href="Packages">Packages</a>
+        <a class="chip" href="Packages.gz">Packages.gz</a>
+        <a class="chip" href="Release">Release</a>
+        <a class="chip" href="debs/">debs/</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="label">Total Packages</div><div class="value" id="total-packages">-</div></div>
+        <div class="stat"><div class="label">Sources Loaded</div><div class="value" id="sources-loaded">-</div></div>
+        <div class="stat"><div class="label">Status</div><div class="value" id="load-state">Loading</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2 style="margin:0;">📦 Available Packages</h2>
+        <input id="search" type="search" placeholder="Search package name or version..." />
+      </div>
+      <p id="status">Loading package metadata from <code>Packages</code> and <code>Packages.gz</code>...</p>
+      <div id="packages" class="grid"></div>
+    </section>
+
+    <p class="footer">Made with ❤️ by Omar</p>
+  </main>
+
+  <script>
+    const packagesEl = document.getElementById('packages');
+    const statusEl = document.getElementById('status');
+    const totalEl = document.getElementById('total-packages');
+    const sourcesEl = document.getElementById('sources-loaded');
+    const stateEl = document.getElementById('load-state');
+    const searchEl = document.getElementById('search');
+
+    let allPackages = [];
+
+    function parseStanzas(text, sourceName) {
+      const stanzas = text.trim().split(/\n\s*\n/).filter(Boolean);
+      const items = [];
+
+      for (const stanza of stanzas) {
+        const lines = stanza.split('\n');
+        let name = '';
+        let pkg = '';
+        let version = '';
+        let filename = '';
+        let description = '';
+
+        for (const line of lines) {
+          if (line.startsWith('Name: ')) name = line.slice(6).trim();
+          if (line.startsWith('Package: ')) pkg = line.slice(9).trim();
+          if (line.startsWith('Version: ')) version = line.slice(9).trim();
+          if (line.startsWith('Filename: ')) filename = line.slice(10).trim();
+          if (line.startsWith('Description: ')) description = line.slice(13).trim();
+        }
+
+        if (filename) {
+          items.push({
+            key: `${pkg || name}-${version}-${filename}`,
+            name: name || pkg || filename.split('/').pop(),
+            packageId: pkg || '',
+            version: version || 'Unknown',
+            filename,
+            description: description || 'No description provided.',
+            source: sourceName
+          });
+        }
+      }
+
+      return items;
+    }
+
+    async function readSource(path) {
+      const response = await fetch(path, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`${path} HTTP ${response.status}`);
+
+      if (!path.endsWith('.gz')) {
+        return await response.text();
+      }
+
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      const isGzip = bytes[0] === 0x1f && bytes[1] === 0x8b;
+
+      if (!isGzip) {
+        return new TextDecoder().decode(bytes);
+      }
+
+      if ('DecompressionStream' in window) {
+        const ds = new DecompressionStream('gzip');
+        const stream = new Blob([bytes]).stream().pipeThrough(ds);
+        return await new Response(stream).text();
+      }
+
+      throw new Error('This browser cannot decompress Packages.gz.');
+    }
+
+    function render(list) {
+      if (!list.length) {
+        packagesEl.innerHTML = '<div class="pkg"><h3>No packages found</h3><div class="meta">Try updating Packages / Packages.gz.</div></div>';
+        return;
+      }
+
+      packagesEl.innerHTML = list.map((item) => `
+        <article class="pkg">
+          <h3>${item.name}<span class="source-tag">${item.source}</span></h3>
+          <div class="meta">${item.packageId ? `${item.packageId} • ` : ''}v${item.version}</div>
+          <div class="meta">${item.description}</div>
+          <a class="download" href="${item.filename}">⬇ Download .deb</a>
+        </article>
+      `).join('');
+    }
+
+    function applySearch() {
+      const q = searchEl.value.trim().toLowerCase();
+      const filtered = allPackages.filter((item) =>
+        item.name.toLowerCase().includes(q) ||
+        item.packageId.toLowerCase().includes(q) ||
+        item.version.toLowerCase().includes(q)
+      );
+      render(filtered);
+      statusEl.textContent = q ? `Showing ${filtered.length} result(s) for "${q}".` : `Showing all ${allPackages.length} package(s).`;
+    }
+
+    async function loadPackages() {
+      const sources = ['Packages', 'Packages.gz'];
+      const loadedSources = [];
+      const combined = [];
+
+      for (const source of sources) {
+        try {
+          const text = await readSource(source);
+          const parsed = parseStanzas(text, source);
+          if (parsed.length) {
+            combined.push(...parsed);
+            loadedSources.push(source);
+          }
+        } catch (err) {
+          console.warn(`Unable to load ${source}:`, err.message);
+        }
+      }
+
+      const deduped = [];
+      const seen = new Set();
+      for (const item of combined) {
+        if (seen.has(item.key)) continue;
+        seen.add(item.key);
+        deduped.push(item);
+      }
+
+      allPackages = deduped;
+      render(allPackages);
+
+      totalEl.textContent = String(allPackages.length);
+      sourcesEl.textContent = loadedSources.length ? loadedSources.join(', ') : 'None';
+      stateEl.textContent = loadedSources.length ? 'Online' : 'No Data';
+      stateEl.style.color = loadedSources.length ? 'var(--ok)' : '#fca5a5';
+      statusEl.textContent = loadedSources.length
+        ? `Loaded ${allPackages.length} package(s) from ${loadedSources.join(' + ')}.`
+        : 'Could not load package metadata. Check Packages / Packages.gz.';
+    }
+
+    searchEl.addEventListener('input', applySearch);
+    loadPackages();
   </script>
 </body>
 </html>
