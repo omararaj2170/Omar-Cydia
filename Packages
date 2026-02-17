@@ -33,3 +33,26 @@ Priority: standard
 Description: OpenSSL tools
 Name: OpenSSL
 
+Package: com.spark.snowboard
+Name: SnowBoard
+Version: 1.5.28
+Architecture: iphoneos-arm
+Description: Powerful theme engine for iOS
+Maintainer: SparkDev
+Author: SparkDev
+Section: Themes
+Filename: debs/com.spark.snowboard_1.5.28_iphoneos-arm.deb
+Size: 1565784
+
+Package: com.r333d.cylinder
+Name: Cylinder
+Version: 1.1
+Architecture: iphoneos-arm
+Description: Home screen icon animation effects
+Maintainer: Reed Weichler
+Author: Reed Weichler
+Section: Tweaks
+Filename: debs/com.r333d.cylinder.deb
+Size: 300358
+
+
