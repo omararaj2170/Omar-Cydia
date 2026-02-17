@@ -12,3 +12,16 @@ Name: OpenSSL
 Filename: debs/openssl_1.1.1i-1_iphoneos-arm.deb
 Size: 226012
 
+Package: com.ps.anywherewidgetsforipad
+Name: Anywhere Widgets for iPad
+Version: 1.4.0
+Architecture: iphoneos-arm
+Maintainer: PoomSmart
+Filename: debs/com.ps.anywherewidgetsforipad_1.4.0_iphoneos-arm.deb
+Size: 3878
+MD5sum: 83f5187d52262ee8d3d461598ae1b58a
+SHA1: 51292df43b38e06ba882f4053aa910672cfc3bdf
+SHA256: be0c60a3079a37eb2dbfbc8ce643240991cd8fbde058eb29cff366e1dc26b232
+Section: Tweaks
+Description: Anywhere Widgets for iPad
+
