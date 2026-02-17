@@ -26,6 +26,60 @@
     <li><a href="debs/">debs/</a></li>
   </ul>
 
+  <h2>Available .deb files</h2>
+  <p>The list below is loaded from the <code>Packages</code> file, so new debs appear after you update it.</p>
+  <ul id="deb-list">
+    <li>Loading packages...</li>
+  </ul>
+
   <p>Made with ❤️ by Omar</p>
+
+  <script>
+    async function loadDebs() {
+      const list = document.getElementById('deb-list');
+
+      try {
+        const response = await fetch('Packages', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const text = await response.text();
+        const stanzas = text.trim().split(/\n\s*\n/).filter(Boolean);
+        const items = [];
+
+        for (const stanza of stanzas) {
+          const lines = stanza.split('\n');
+          let name = '';
+          let version = '';
+          let filename = '';
+
+          for (const line of lines) {
+            if (line.startsWith('Name: ')) name = line.slice(6).trim();
+            if (line.startsWith('Package: ') && !name) name = line.slice(9).trim();
+            if (line.startsWith('Version: ')) version = line.slice(9).trim();
+            if (line.startsWith('Filename: ')) filename = line.slice(10).trim();
+          }
+
+          if (filename) {
+            items.push({ name: name || filename.split('/').pop(), version, filename });
+          }
+        }
+
+        if (!items.length) {
+          list.innerHTML = '<li>No packages found yet.</li>';
+          return;
+        }
+
+        list.innerHTML = items
+          .map((item) => `<li><a href="${item.filename}">${item.name}${item.version ? ` (${item.version})` : ''}</a></li>`)
+          .join('');
+      } catch (error) {
+        list.innerHTML = '<li>Could not load package list. Make sure the Packages file exists.</li>';
+      }
+    }
+
+    loadDebs();
+  </script>
 </body>
 </html>
