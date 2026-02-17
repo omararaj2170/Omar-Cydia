@@ -35,7 +35,9 @@
     .kv { display:grid; grid-template-columns:150px 1fr; gap:8px 14px; }
     .k { color:var(--muted); } .v { word-break:break-word; }
     .music-controls { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .music-btn { border:1px solid #35518a; background:#14203d; color:#dff5ff; border-radius:10px; padding:8px 12px; cursor:pointer; }
+    .music-btn-stack { position:relative; width:130px; height:38px; }
+    .music-btn { position:absolute; inset:0; border:1px solid #35518a; background:#14203d; color:#dff5ff; border-radius:10px; padding:8px 12px; cursor:pointer; }
+    .music-btn.hidden { display:none; }
     .music-state { color:var(--muted); font-size:.9rem; }
     .footer { margin-top:24px; color:var(--muted); text-align:center; }
     @media (max-width:640px){ .stats{grid-template-columns:1fr;} #search{width:100%;min-width:0;} .kv{grid-template-columns:1fr;} }
@@ -52,7 +54,10 @@
       </div>
 
       <div class="music-controls">
-        <button id="stop-music" class="music-btn" type="button">⏹ Stop Music</button>
+        <div class="music-btn-stack">
+          <button id="stop-music" class="music-btn" type="button">⏹ Stop Music</button>
+          <button id="play-music" class="music-btn hidden" type="button">▶ Play Music</button>
+        </div>
         <span id="music-state" class="music-state">Trying to autoplay <code>music/1.mp3</code>...</span>
       </div>
       <audio id="bg-music" src="music/1.mp3" preload="auto" autoplay loop></audio>
@@ -90,6 +95,7 @@
     const detailsHelp = document.getElementById('details-help');
     const bgMusic = document.getElementById('bg-music');
     const stopMusicBtn = document.getElementById('stop-music');
+    const playMusicBtn = document.getElementById('play-music');
     const musicState = document.getElementById('music-state');
 
     let allPackages = [];
@@ -202,12 +208,16 @@
       try {
         await bgMusic.play();
         musicState.textContent = '▶ Music playing (music/1.mp3)';
+        stopMusicBtn.classList.remove('hidden');
+        playMusicBtn.classList.add('hidden');
       } catch (err) {
         musicState.textContent = 'Autoplay was blocked by browser. Tap anywhere to start music.';
         const resume = async () => {
           try {
             await bgMusic.play();
             musicState.textContent = '▶ Music playing (music/1.mp3)';
+            stopMusicBtn.classList.remove('hidden');
+            playMusicBtn.classList.add('hidden');
           } catch {}
           document.removeEventListener('click', resume);
         };
@@ -219,6 +229,19 @@
       bgMusic.pause();
       bgMusic.currentTime = 0;
       musicState.textContent = '⏹ Music stopped';
+      stopMusicBtn.classList.add('hidden');
+      playMusicBtn.classList.remove('hidden');
+    });
+
+    playMusicBtn.addEventListener('click', async () => {
+      try {
+        await bgMusic.play();
+        musicState.textContent = '▶ Music playing (music/1.mp3)';
+        playMusicBtn.classList.add('hidden');
+        stopMusicBtn.classList.remove('hidden');
+      } catch {
+        musicState.textContent = 'Could not play music yet. Tap again.';
+      }
     });
 
     searchEl.addEventListener('input', applySearch);
