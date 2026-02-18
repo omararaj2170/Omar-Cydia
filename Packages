@@ -74,3 +74,25 @@ Priority: standard
 Description: OpenSSL tools
 Name: OpenSSL
 
+
+
+Package: cy.saurik.winterboard
+Version: 0.9.3919
+Architecture: iphoneos-arm
+Maintainer: Jay Freeman (saurik)
+Installed-Size: 108
+Depends: mobilesubstrate
+Filename: debs/winterboard.deb
+Size: 108
+MD5sum: 903869BCC23C88EEB71615E833E626AF
+SHA1:  569CC3F77A3CA6CD2046A84BC5C3A68FBB2F00EA
+SHA256: 8CD0AD873EACF4C209E4E89E2E1E0AB0EA963F49CD652EF814ED97D2FB157991
+Section: Tweaks
+Priority: optional
+Description: WinterBoard allows you to apply custom themes, icons, and UI modifications on your iOS device. Customize the look of your iPhone or iPad easily.
+Name: Winterboard
+
+
+
+
+
